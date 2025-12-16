@@ -7,13 +7,6 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
-  <!-- 🔐 Proteksi Login -->
-  <script>
-    if (localStorage.getItem("login") !== "true") {
-      window.location.href = "index.html";
-    }
-  </script>
-
   <style>
     * {
       box-sizing: border-box;
@@ -168,7 +161,7 @@
     <a href="dashboard.html" class="active">Dashboard</a>
     <a href="data-karyatulis.html">Data Karya Tulis</a>
     <a href="upload-karyatulis.html">Upload Karya Tulis</a>
-    <a href="#" onclick="logout()">Logout</a>
+    <a href="index.html" onclick="logout()">Logout</a>
   </nav>
 
   <!-- CONTENT -->
@@ -229,14 +222,18 @@
 </div>
 
 <script>
-  // Tampilkan nama user login
+  // Proteksi login
+  if (localStorage.getItem("login") !== "true") {
+    window.location.href = "index.html";
+  }
+
+  // Tampilkan nama user
   document.getElementById("namaUser").innerText =
     localStorage.getItem("nama") || "User";
 
   // Logout
   function logout() {
     localStorage.clear();
-    window.location.href = "index.html";
   }
 </script>
 
