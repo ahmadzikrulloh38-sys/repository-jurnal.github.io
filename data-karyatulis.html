@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Data Karya Tulis</title>
+<title>Data Karya Tulis SMKS 1 Barunawati</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <link rel="stylesheet"
@@ -69,6 +69,19 @@ header {
   margin-bottom: 20px;
   color: #203a43;
   font-weight: 600;
+}
+
+/* Filter */
+.filter-container {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+.filter-container label {
+  margin-right: 5px;
+  font-weight: 500;
 }
 
 /* Tabel */
@@ -142,7 +155,7 @@ td:last-child {
 <div class="container">
 
 <nav class="sidebar">
-  <a href="dashboard.html" > Dashboard</a>
+  <a href="dashboard.html">Dashboard</a>
   <a href="data-karyatulis.html" class="active">Data Karya Tulis</a>
   <a href="upload-karyatulis.html">Upload Karya Tulis</a>
   <a href="#" onclick="logout()">Logout</a>
@@ -150,6 +163,22 @@ td:last-child {
 
 <main class="content">
   <h3>Daftar Karya Tulis Siswa</h3>
+
+  <!-- Filter -->
+  <div class="filter-container">
+    <div>
+      <label for="filterJurusan">Jurusan:</label>
+      <select id="filterJurusan">
+        <option value="">Semua Jurusan</option>
+      </select>
+    </div>
+    <div>
+      <label for="filterTahun">Tahun:</label>
+      <select id="filterTahun">
+        <option value="">Semua Tahun</option>
+      </select>
+    </div>
+  </div>
 
   <table>
     <thead>
@@ -170,44 +199,90 @@ td:last-child {
 </div>
 
 <script>
+let allData = [];
+
+function renderTable(data) {
+  const tbody = document.getElementById("dataTabel");
+  tbody.innerHTML = "";
+
+  if(data.length === 0){
+    tbody.innerHTML = "<tr><td colspan='5'>Data tidak ditemukan</td></tr>";
+    return;
+  }
+
+  data.forEach(row => {
+    let link = row.link;
+    if (link.includes("drive.google.com")) {
+      const id = link.split("/d/")[1]?.split("/")[0];
+      if (id) link = `https://drive.google.com/uc?id=${id}&export=download`;
+    }
+
+    tbody.innerHTML += `
+      <tr>
+        <td>${row.judul}</td>
+        <td>${row.nama}</td>
+        <td>${row.jurusan}</td>
+        <td>${row.tahun}</td>
+        <td>
+          <a href="${link}" target="_blank" title="Download">
+            <i class="fa-solid fa-download"></i>
+          </a>
+        </td>
+      </tr>
+    `;
+  });
+}
+
+function populateFilters(data) {
+  const jurusanSet = new Set();
+  const tahunSet = new Set();
+
+  data.forEach(row => {
+    jurusanSet.add(row.jurusan);
+    tahunSet.add(row.tahun);
+  });
+
+  const jurusanSelect = document.getElementById("filterJurusan");
+  const tahunSelect = document.getElementById("filterTahun");
+
+  jurusanSet.forEach(j => {
+    const option = document.createElement("option");
+    option.value = j;
+    option.text = j;
+    jurusanSelect.appendChild(option);
+  });
+
+  tahunSet.forEach(t => {
+    const option = document.createElement("option");
+    option.value = t;
+    option.text = t;
+    tahunSelect.appendChild(option);
+  });
+}
+
+// Event listener filter
+document.getElementById("filterJurusan").addEventListener("change", applyFilter);
+document.getElementById("filterTahun").addEventListener("change", applyFilter);
+
+function applyFilter() {
+  const jurusanValue = document.getElementById("filterJurusan").value;
+  const tahunValue = document.getElementById("filterTahun").value;
+
+  let filtered = allData;
+
+  if(jurusanValue) filtered = filtered.filter(row => row.jurusan === jurusanValue);
+  if(tahunValue) filtered = filtered.filter(row => row.tahun === tahunValue);
+
+  renderTable(filtered);
+}
+
+// Ambil data dari Google Apps Script
 fetch("https://script.google.com/macros/s/AKfycbwhQOV4axjkdQF4tJAFpvzQ4kUpLNoHEIYR2b5pXy8WJsTHGK8jOlRkQcACpBmxylTY/exec")
   .then(res => res.json())
   .then(data => {
-
-    const tbody = document.getElementById("dataTabel");
-    tbody.innerHTML = "";
-
-    if(data.length === 0){
-      tbody.innerHTML = "<tr><td colspan='5'>Data kosong</td></tr>";
-      return;
-    }
-
-    data.forEach(row => {
-
-      let link = row.link;
-
-      if (link.includes("drive.google.com")) {
-        const id = link.split("/d/")[1]?.split("/")[0];
-        if (id) {
-          link = `https://drive.google.com/uc?id=${id}&export=download`;
-        }
-      }
-
-      tbody.innerHTML += `
-        <tr>
-          <td>${row.judul}</td>
-          <td>${row.nama}</td>
-          <td>${row.jurusan}</td>
-          <td>${row.tahun}</td>
-          <td>
-            <a href="${link}" target="_blank" title="Download">
-              <i class="fa-solid fa-download"></i>
-            </a>
-          </td>
-        </tr>
-      `;
-    });
-
+    allData = data;
+    populateFilters(allData);
+    renderTable(allData);
   })
   .catch(err => {
     document.getElementById("dataTabel").innerHTML =
@@ -223,4 +298,3 @@ function logout() {
 
 </body>
 </html>
-
