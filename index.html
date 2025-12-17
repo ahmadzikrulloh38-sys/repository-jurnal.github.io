@@ -9,11 +9,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <style>
-    * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+    * { box-sizing: border-box; font-family: 'Poppins', sans-serif; margin:0; padding:0; }
 
-    body {
-      margin: 0;
-      min-height: 100vh;
+    html, body {
+      height: 100%;
       background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
       display: flex;
       align-items: center;
@@ -22,45 +21,57 @@
 
     .login-container {
       background: #ffffff;
-      width: 380px;
-      padding: 35px;
+      width: 360px;
+      max-width: 90%;
+      padding: 30px 25px;
       border-radius: 14px;
       box-shadow: 0 15px 35px rgba(0,0,0,0.25);
       text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
     }
 
     /* Logo */
     .logo {
-      width: 180px;       /* ukuran default */
-      height: 180px;
+      width: 100px;       /* ukuran lebih proporsional */
+      height: 100px;
       object-fit: contain;
-      margin-bottom: 15px;
+      margin-bottom: 10px; /* jarak lebih rapat ke judul */
     }
 
-    /* Responsif untuk layar kecil */
     @media (max-width: 400px) {
       .logo {
-        width: 80px;
-        height: 80px;
-        margin-bottom: 10px;
+        width: 60px;
+        height: 60px;
       }
     }
 
     h2 {
       color: #2c5364;
-      margin-bottom: 8px;
+      margin: 3px 0;  /* jarak rapat antar judul */
+      font-size: 18px;
     }
 
-    p { font-size: 14px; color: #666; margin-bottom: 25px; }
+    p {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 20px;
+    }
 
-    .form-group { margin-bottom: 18px; text-align: left; }
+    .form-group {
+      margin-bottom: 15px;
+      width: 100%;
+      text-align: left;
+    }
 
     label { font-size: 13px; color: #333; }
 
     input {
       width: 100%;
-      padding: 12px;
-      margin-top: 6px;
+      padding: 10px;
+      margin-top: 5px;
       border-radius: 8px;
       border: 1px solid #ccc;
       outline: none;
@@ -86,9 +97,18 @@
 
     .btn-login:hover { background: #203a43; }
 
-    #result { margin-top: 15px; font-size: 14px; color: red; }
+    #result {
+      margin-top: 10px;
+      font-size: 14px;
+      color: red;
+      min-height: 18px;
+    }
 
-    .footer-text { margin-top: 25px; font-size: 12px; color: #888; }
+    .footer-text {
+      margin-top: 15px;
+      font-size: 12px;
+      color: #888;
+    }
   </style>
 </head>
 
