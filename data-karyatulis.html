@@ -9,23 +9,31 @@
  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
 <style>
+:root {
+  --primary: #4B6CB7;   /* Biru Indigo */
+  --secondary: #FFFFFF; /* Putih */
+  --text: #2C2C2C;      /* Abu Gelap */
+  --accent: #00BFFF;    /* Biru Cerah */
+  --shadow: rgba(0,0,0,0.05);
+}
+
 body {
   margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: 'Poppins', sans-serif;
   background: #f4f6f9;
 }
 
 /* Header */
 header {
-  background: linear-gradient(to right, #2c5364, #203a43);
-  color: white;
+  background: linear-gradient(to right, var(--primary), #182848);
+  color: var(--secondary);
   padding: 15px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 18px;
   font-weight: 600;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px var(--shadow);
 }
 
 /* Hamburger for mobile */
@@ -33,6 +41,7 @@ header {
   display: none;
   font-size: 24px;
   cursor: pointer;
+  color: var(--secondary);
 }
 
 /* Layout container */
@@ -61,8 +70,8 @@ header {
 
 .sidebar a:hover,
 .sidebar a.active {
-  background: #2c5364;
-  color: white;
+  background: var(--primary);
+  color: var(--secondary);
 }
 
 /* Content utama */
@@ -89,21 +98,34 @@ header {
 .filter-container label {
   margin-right: 5px;
   font-weight: 500;
+  color: var(--text);
+}
+
+select {
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  outline: none;
+}
+
+select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 5px rgba(75,108,183,0.3);
 }
 
 /* Tabel */
 table {
   width: 100%;
   border-collapse: collapse;
-  background: white;
+  background: var(--secondary);
   border-radius: 8px;
   overflow: hidden;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+  box-shadow: 0 4px 10px var(--shadow);
 }
 
 thead {
-  background: linear-gradient(to right, #2c5364, #203a43);
-  color: white;
+  background: var(--primary);
+  color: var(--secondary);
 }
 
 th, td {
@@ -126,7 +148,7 @@ tbody tr:hover {
 }
 
 td a {
-  color: #2c5364;
+  color: var(--accent);
   font-size: 18px;
   display: flex;
   justify-content: center;
