@@ -5,44 +5,68 @@
 <title>Upload Karya Tulis | Repository Karya Tulis</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<!-- 🔐 Proteksi Login -->
+<!-- Proteksi Login -->
 <script>
 if (localStorage.getItem("login") !== "true") {
   window.location.href = "index.html";
 }
 </script>
 
+<link rel="stylesheet"
+ href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
 <style>
+:root {
+  --primary: #4B6CB7;   /* Biru Indigo */
+  --secondary: #FFFFFF; /* Putih */
+  --text: #2C2C2C;      /* Abu Gelap */
+  --accent: #00BFFF;    /* Biru Cerah */
+  --shadow: rgba(0,0,0,0.15);
+}
+
 * {
   box-sizing: border-box;
-  font-family: Arial, sans-serif;
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  margin: 0;
   background: #f4f6f9;
 }
 
 /* HEADER */
 header {
-  background: #2c5364;
-  color: white;
+  background: var(--primary);
+  color: var(--secondary);
   padding: 15px 25px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  font-weight: 600;
+}
+
+.menu-toggle {
+  display: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: var(--secondary);
 }
 
 /* LAYOUT */
 .container {
   display: flex;
   min-height: calc(100vh - 60px);
+  flex-wrap: wrap;
 }
 
 /* SIDEBAR */
 .sidebar {
   width: 220px;
   background: #203a43;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease;
 }
 
 .sidebar a {
@@ -51,12 +75,13 @@ header {
   color: #ddd;
   text-decoration: none;
   font-size: 14px;
+  transition: 0.3s;
 }
 
 .sidebar a:hover,
 .sidebar a.active {
-  background: #2c5364;
-  color: white;
+  background: var(--primary);
+  color: var(--secondary);
 }
 
 /* CONTENT */
@@ -68,37 +93,69 @@ header {
 /* UPLOAD CARD */
 .upload-card {
   max-width: 420px;
-  background: white;
-  margin: 60px auto;
+  background: var(--secondary);
+  margin: 40px auto;
   padding: 35px;
-  border-radius: 14px;
+  border-radius: 16px;
   text-align: center;
-  box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+  box-shadow: 0 15px 35px var(--shadow);
 }
 
 .upload-card h2 {
   margin-top: 0;
-  color: #2c5364;
+  color: var(--primary);
 }
 
 .upload-card p {
   font-size: 14px;
-  color: #555;
+  color: var(--text);
 }
 
 .upload-card a {
   display: inline-block;
   margin-top: 20px;
   padding: 14px 26px;
-  background: #2c5364;
-  color: white;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  color: var(--secondary);
   text-decoration: none;
   border-radius: 10px;
   font-size: 15px;
+  font-weight: 600;
+  transition: 0.3s;
 }
 
 .upload-card a:hover {
-  background: #203a43;
+  background: var(--accent);
+  color: var(--secondary);
+}
+
+.upload-card small {
+  display: block;
+  font-size: 12px;
+  margin-top: 15px;
+  color: #777;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .sidebar {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    height: calc(100vh - 60px);
+    transform: translateX(-100%);
+    z-index: 1000;
+  }
+  .sidebar.active {
+    transform: translateX(0);
+  }
+  .menu-toggle {
+    display: block;
+  }
+  .content {
+    padding: 20px;
+    width: 100%;
+  }
 }
 </style>
 </head>
@@ -107,22 +164,22 @@ header {
 
 <header>
   <strong>Repository Karya Tulis</strong>
+  <i class="fa-solid fa-bars menu-toggle" onclick="toggleSidebar()"></i>
   <div>Login sebagai: <b id="namaUser"></b></div>
 </header>
 
 <div class="container">
 
   <!-- SIDEBAR -->
-  <nav class="sidebar">
+  <nav class="sidebar" id="sidebar">
     <a href="dashboard.html">Dashboard</a>
     <a href="data-karyatulis.html">Data Karya Tulis</a>
     <a href="upload-karyatulis.html" class="active">Upload Karya Tulis</a>
-    <a href="index.html" onclick="logout()">Logout</a>
+    <a href="#" onclick="logout()">Logout</a>
   </nav>
 
   <!-- CONTENT -->
   <main class="content">
-
     <div class="upload-card">
       <h2>Upload Karya Tulis</h2>
       <p>
@@ -135,11 +192,8 @@ header {
         Buka Form Upload Karya Tulis
       </a>
 
-      <p style="font-size:12px;margin-top:15px;color:#777">
-        Setelah submit, silakan kembali ke Dashboard
-      </p>
+      <small>Setelah submit, silakan kembali ke Dashboard</small>
     </div>
-
   </main>
 </div>
 
@@ -148,9 +202,15 @@ header {
   document.getElementById("namaUser").innerText =
     localStorage.getItem("nama") || "User";
 
+  // Sidebar toggle
+  function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("active");
+  }
+
   // Logout
   function logout() {
     localStorage.clear();
+    window.location.href = "index.html";
   }
 </script>
 
