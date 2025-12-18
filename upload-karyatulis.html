@@ -1,236 +1,250 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>Upload Karya Tulis | Repository</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
+<title>Upload Karya Tulis | Repository</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <!-- Proteksi Login -->
-  <script>
-    if (localStorage.getItem("login") !== "true") {
-      window.location.href = "index.html";
-    }
-  </script>
+<script>
+if(localStorage.getItem("login")!=="true")location.href="index.html";
+</script>
 
-  <!-- Font & Icon -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
-  <style>
-    :root {
-      --bg: #f6f8fc;
-      --white: #ffffff;
-      --primary: #6c63ff;
-      --primary-soft: #eef0ff;
-      --text: #1f2937;
-      --muted: #6b7280;
-      --border: #e5e7eb;
-      --shadow: 0 12px 30px rgba(0,0,0,.06);
-      --radius: 16px;
-    }
+<style>
+:root{
+  --bg:#f6f8fc;
+  --white:#fff;
+  --primary:#6c63ff;
+  --primary-soft:#eef0ff;
+  --text:#1f2937;
+  --muted:#6b7280;
+  --border:#e5e7eb;
+  --shadow:0 12px 30px rgba(0,0,0,.06);
+  --radius:16px;
+}
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif;}
+body{background:var(--bg);color:var(--text);}
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Inter', sans-serif;
-    }
+/* ===== Layout ===== */
+.layout{
+  display:grid;
+  grid-template-columns:260px 1fr;
+  min-height:100vh;
+}
+.main{
+  padding:24px 28px;
+}
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-    }
+/* ===== Sidebar ===== */
+.sidebar{
+  background:var(--white);
+  padding:24px 18px;
+  border-right:1px solid var(--border);
+}
+.brand{
+  font-size:20px;
+  font-weight:700;
+  margin-bottom:28px;
+}
+.menu a{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:14px 16px;
+  margin-bottom:6px;
+  text-decoration:none;
+  color:var(--muted);
+  border-radius:14px;
+  font-weight:500;
+}
+.menu a.active,
+.menu a:hover{
+  background:var(--primary-soft);
+  color:var(--primary);
+}
 
-    /* ===== Layout ===== */
-    .layout {
-      display: grid;
-      grid-template-columns: 260px 1fr;
-      min-height: 100vh;
-    }
+/* ===== Topbar ===== */
+.topbar{
+  position:sticky;
+  top:0;
+  z-index:100;
+  background:var(--bg);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding-bottom:14px;
+  margin-bottom:18px;
+}
+.topbar-left{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+.burger{
+  display:none;
+  font-size:22px;
+  padding:10px;
+  border-radius:12px;
+  background:var(--white);
+  box-shadow:var(--shadow);
+  cursor:pointer;
+}
 
-    /* ===== Sidebar ===== */
-    .sidebar {
-      background: var(--white);
-      padding: 24px 18px;
-      border-right: 1px solid var(--border);
-    }
+/* ===== Card ===== */
+.card{
+  background:var(--white);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:28px;
+  max-width:520px;
+  margin:auto;
+  text-align:center;
+}
+.upload-icon{
+  width:72px;
+  height:72px;
+  border-radius:22px;
+  background:var(--primary-soft);
+  color:var(--primary);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:28px;
+  margin:0 auto 18px;
+}
+.card h3{
+  font-size:20px;
+  font-weight:700;
+  margin-bottom:8px;
+}
+.card p{
+  font-size:14px;
+  color:var(--muted);
+  line-height:1.6;
+}
+.btn-upload{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  margin-top:22px;
+  padding:16px;
+  width:100%;
+  background:var(--primary);
+  color:#fff;
+  border-radius:16px;
+  text-decoration:none;
+  font-weight:600;
+  font-size:15px;
+}
+.btn-upload:active{transform:scale(.98);}
+.note{
+  margin-top:16px;
+  font-size:13px;
+  color:var(--muted);
+}
 
-    .brand {
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 32px;
-      padding: 0 12px;
-    }
+/* ===== Overlay ===== */
+.overlay{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.45);
+  z-index:998;
+}
 
-    .menu a {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 14px 16px;
-      margin-bottom: 6px;
-      text-decoration: none;
-      color: var(--muted);
-      border-radius: 14px;
-      font-weight: 500;
-      transition: .2s;
-    }
+/* ===== Mobile ===== */
+@media(max-width:900px){
+  .layout{grid-template-columns:1fr;}
+  .burger{display:block;}
 
-    .menu a i { width: 18px; }
+  .sidebar{
+    position:fixed;
+    left:-280px;
+    top:0;
+    width:260px;
+    height:100%;
+    z-index:999;
+    transition:.3s ease;
+    box-shadow:0 10px 30px rgba(0,0,0,.2);
+  }
+  .sidebar.show{left:0;}
+  .overlay.show{display:block;}
 
-    .menu a.active,
-    .menu a:hover {
-      background: var(--primary-soft);
-      color: var(--primary);
-    }
-
-    /* ===== Main ===== */
-    .main {
-      padding: 28px 32px;
-    }
-
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 26px;
-    }
-
-    .topbar h2 {
-      font-size: 22px;
-      font-weight: 700;
-    }
-
-    /* ===== Card ===== */
-    .card {
-      background: var(--white);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      padding: 32px;
-      max-width: 560px;
-      margin: 0 auto;
-      text-align: center;
-    }
-
-    .card h3 {
-      font-size: 20px;
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-
-    .card p {
-      font-size: 14px;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
-    .upload-icon {
-      width: 72px;
-      height: 72px;
-      border-radius: 20px;
-      background: var(--primary-soft);
-      color: var(--primary);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 28px;
-      margin: 0 auto 18px;
-    }
-
-    .btn-upload {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 24px;
-      padding: 14px 22px;
-      background: var(--primary);
-      color: #fff;
-      border-radius: 14px;
-      text-decoration: none;
-      font-weight: 600;
-      transition: .2s;
-    }
-
-    .btn-upload:hover {
-      opacity: .9;
-      transform: translateY(-1px);
-    }
-
-    .note {
-      margin-top: 18px;
-      font-size: 13px;
-      color: var(--muted);
-    }
-
-    /* ===== Responsive ===== */
-    @media (max-width: 900px) {
-      .layout { grid-template-columns: 1fr; }
-      .sidebar { display: none; }
-      .main { padding: 22px 18px; }
-    }
-  </style>
+  .main{
+    padding:20px 16px;
+  }
+  .card{
+    padding:22px;
+  }
+}
+</style>
 </head>
 
 <body>
 
+<div class="overlay" id="overlay" onclick="toggleSidebar()"></div>
+
 <div class="layout">
 
-  <!-- Sidebar -->
-  <aside class="sidebar">
-    <div class="brand">📘 Repository SMKS 1 Barunawati</div>
-    <nav class="menu">
-      <a href="dashboard.html"><i class="fa-solid fa-grid"></i> Dashboard</a>
-      <a href="data-karyatulis.html"><i class="fa-solid fa-book"></i> Data Karya Tulis</a>
-      <a class="active" href="upload-karyatulis.html"><i class="fa-solid fa-upload"></i> Upload Karya Tulis</a>
-      <a href="#" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
-    </nav>
-  </aside>
+<!-- Sidebar -->
+<aside class="sidebar" id="sidebar">
+  <div class="brand">📘 Repository SMKS 1 Barunawati</div>
+  <nav class="menu">
+    <a href="dashboard.html"><i class="fa-solid fa-grid"></i> Dashboard</a>
+    <a href="data-karyatulis.html"><i class="fa-solid fa-book"></i> Data Karya Tulis</a>
+    <a class="active" href="#"><i class="fa-solid fa-upload"></i> Upload Karya Tulis</a>
+    <a href="#" onclick="logout()"><i class="fa-solid fa-right-from-bracket"></i> Logout</a>
+  </nav>
+</aside>
 
-  <!-- Main -->
-  <main class="main">
+<!-- Main -->
+<main class="main">
 
-    <div class="topbar">
-      <h2>Upload Karya Tulis</h2>
-      <div>Login sebagai: <strong id="namaUser"></strong></div>
-    </div>
+<div class="topbar">
+  <div class="topbar-left">
+    <i class="fa-solid fa-bars burger" onclick="toggleSidebar()"></i>
+    <h2>Upload Karya</h2>
+  </div>
+  <strong id="namaUser"></strong>
+</div>
 
-    <section class="card">
+<section class="card">
 
-      <div class="upload-icon">
-        <i class="fa-solid fa-cloud-arrow-up"></i>
-      </div>
+  <div class="upload-icon">
+    <i class="fa-solid fa-cloud-arrow-up"></i>
+  </div>
 
-      <h3>Unggah Karya Tulis</h3>
-      <p>
-        Untuk menjaga keamanan data dan kemudahan pengelolaan file PDF,
-        proses unggah karya tulis dilakukan melalui Google Form resmi.
-      </p>
+  <h3>Unggah Karya Tulis</h3>
+  <p>
+    Unggah file karya tulis siswa melalui Google Form resmi
+    untuk menjaga keamanan dan kerapihan data.
+  </p>
 
-      <a
-        href="https://docs.google.com/forms/d/e/1FAIpQLSci6Bqz_i2tTBb3pC-ds87UzX-j5snHVG5f0oFf9tIEFw-Daw/viewform"
-        target="_blank"
-        class="btn-upload"
-      >
-        <i class="fa-solid fa-file-arrow-up"></i>
-        Buka Form Upload
-      </a>
+  <a href="https://docs.google.com/forms/d/e/1FAIpQLSci6Bqz_i2tTBb3pC-ds87UzX-j5snHVG5f0oFf9tIEFw-Daw/viewform"
+     target="_blank" class="btn-upload">
+    <i class="fa-solid fa-file-arrow-up"></i>
+    Buka Form Upload
+  </a>
 
-      <div class="note">
-        Setelah submit, silakan kembali ke dashboard untuk melihat data.
-      </div>
+  <div class="note">
+    Setelah submit, kembali ke dashboard untuk melihat data.
+  </div>
 
-    </section>
+</section>
 
-  </main>
+</main>
 </div>
 
 <script>
-  document.getElementById("namaUser").textContent =
-    localStorage.getItem("nama") || "User";
-
-  function logout() {
-    localStorage.clear();
-    window.location.href = "index.html";
-  }
+namaUser.textContent=localStorage.getItem("nama")||"User";
+function logout(){localStorage.clear();location.href="index.html";}
+function toggleSidebar(){
+  sidebar.classList.toggle("show");
+  overlay.classList.toggle("show");
+}
 </script>
 
 </body>
